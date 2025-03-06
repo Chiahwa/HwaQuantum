@@ -24,15 +24,20 @@ int main()
 		double t = k * solver.dt;
 		solver.InitQVM(nqubits, f);
 		solver.Run(k, NOISE_MODEL::BITFLIP_KRAUS_OPERATOR, 0.03);
-		auto result = solver.GetResult();
+		auto resultU = solver.GetResultU();
+		auto resultX = solver.GetX();
 
-		char filename[100];
-		snprintf(filename, 100, "result_%.2lf.txt", t);
-		std::ofstream fout(filename, ios::out);
-		for (size_t i = 0; i < result.size(); ++i) {
-			fout << result[i].first << " " << result[i].second << std::endl;
+		char filename_u[100] = "result/u.txt";
+		std::ofstream fout_u(filename_u, ios::out);
+		char filename_x[100] = "result/x.txt";
+		std::ofstream fout_x(filename_x, ios::out);
+		
+		for (size_t i = 0; i < resultU.size(); ++i) {
+			fout_u << resultU[i] << std::endl;
+			fout_x << resultX[i] << std::endl;
 		}
-		fout.close();
+		fout_u.close();
+		fout_x.close();
 	}
 	return 0;
 }

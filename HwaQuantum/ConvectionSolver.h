@@ -32,6 +32,7 @@ public:
 	void InitQVM(int n_qubits, vector<double> initState);
 
 	void Run(int n_timestep, const NOISE_MODEL& model, double p);
-	std::vector<std::pair<double, double>> GetResult();
+	std::vector<double> GetResultU() const;
+	std::vector<double> GetX() const;
 };
 

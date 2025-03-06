@@ -55,13 +55,23 @@ void ConvectionSolver::Run(int n_timestep, const NOISE_MODEL &model, double p)
 	//this->densityMatrix = qvm->get_density_matrix(prog); // TODO: densityMatrix can be removed
 }
 
-std::vector<std::pair<double, double>> ConvectionSolver::GetResult()
+std::vector<double> ConvectionSolver::GetResultU() const
 {
 	size_t Nx = 1LL << n_qubits;
-	std::vector<std::pair<double, double>> result(Nx);
+	std::vector<double> result(Nx);
 	for (int k = 0;k < Nx;++k) {
-		result[k].first = k * L / Nx;
-		result[k].second = sqrt(probabilities[k]) * norm;
+		result[k] = sqrt(probabilities[k]) * norm;
 	}
 	return result;
+}
+
+std::vector<double> ConvectionSolver::GetX() const
+{
+	size_t Nx = 1LL << n_qubits;
+	std::vector<double> X(Nx);
+	double dx = L / Nx;
+	for (int k = 0;k < Nx;++k) {
+		X[k] = k * dx;
+	}
+	return X;
 }
