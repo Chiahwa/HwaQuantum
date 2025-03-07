@@ -13,3 +13,6 @@ double offset = 2.0;
 double f(double x) {
     return sin(lambda * x)+offset;
 }
+
+string noise_type = "BITFLIP";
+double noise_p = 0.03;

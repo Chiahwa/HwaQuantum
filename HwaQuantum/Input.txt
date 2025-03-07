@@ -5,6 +5,8 @@
 0.15
 30
 9
+DEPOLARIZING
+0.03
 
 %%%
 c
@@ -14,3 +16,5 @@ offset
 dt
 nsteps
 nqubits
+noise_type
+noise_p

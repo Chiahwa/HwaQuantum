@@ -26,6 +26,11 @@ int main()
 	std::cout << "Please input nqubits:" << std::endl;
 	std::cin >> nqubits;
 	NX = 1LL << nqubits;
+	std::cout << "Please input noise_type:" << std::endl;
+	std::cin >> noise_type;
+	std::cout << "Please input noise_p:" << std::endl;
+	std::cin >> noise_p;
+
 
 
     ConvectionSolver solver(c, L);
@@ -36,8 +41,8 @@ int main()
 	std::ofstream fout_x(filename_x, ios::out);
 	char filename_params[100] = "result/params.txt";
 	std::ofstream fout_params(filename_params, ios::out);
-	fout_params << "c L lambda offset dt nqubits nsteps" << std::endl;
-	fout_params << c << " " << L << " " << lambda << " " << offset << " " << dt << " " << nqubits << " " << nsteps << std::endl;
+	fout_params << "c L lambda offset dt nqubits nsteps noise_type noise_p" << std::endl;
+	fout_params << c << " " << L << " " << lambda << " " << offset << " " << dt << " " << nqubits << " " << nsteps << " " << noise_type << " " << noise_p << std::endl;
 	fout_params.close();
 
 	for (size_t i = 0; i < NX; ++i) {
@@ -47,7 +52,21 @@ int main()
 	for (int k = 0;k <= nsteps;++k) {
 		double t = k * dt;
 		solver.InitQVM(nqubits, dt, f);
-		solver.Run(k, NOISE_MODEL::BITFLIP_KRAUS_OPERATOR, 0.03);
+		NOISE_MODEL noise_model;
+		if (noise_type == "BITFLIP") {
+			noise_model = NOISE_MODEL::BITFLIP_KRAUS_OPERATOR;
+		}
+		else if (noise_type == "DEPOLARIZING") {
+			noise_model = NOISE_MODEL::DEPOLARIZING_KRAUS_OPERATOR;
+		}
+		else if (noise_type == "DEPHASING") {
+			noise_model = NOISE_MODEL::DEPHASING_KRAUS_OPERATOR;
+		}
+		else {
+			std::cerr << "Unknown noise type" << std::endl;
+			exit(1);
+		}
+		solver.Run(k, noise_model, noise_p);
 		auto resultU = solver.GetResultU();
 		auto resultX = solver.GetX();
 
