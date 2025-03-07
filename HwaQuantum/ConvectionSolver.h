@@ -8,6 +8,7 @@ class ConvectionSolver
 private:
 	double norm;
 	int n_qubits;
+	double dt;
 
 	QVec qubits;
 	QProg *prog;
@@ -18,18 +19,18 @@ private:
 	QCircuit oneTimeStepCircuit();
 	//DensityMatrixSimulator qvm;
 public:
-	ConvectionSolver(double c = 1.0, double dt = 0.1, double L = 2 * PI) : c(c), dt(dt), L(L) {};
+	ConvectionSolver(double c = 1.0, double L = 2 * PI) : c(c), L(L) {};
 	~ConvectionSolver() {
 		qvm->finalize();
 		delete qvm;
 	}
 	double c;
-	double dt;
+	
 	double L;
 	
 	double (*InitCondition)(double);
-	void InitQVM(int n_qubits, double (*f)(double));
-	void InitQVM(int n_qubits, vector<double> initState);
+	void InitQVM(int n_qubits, double dt, double (*f)(double));
+	void InitQVM(int n_qubits, double dt, vector<double> initState);
 
 	void Run(int n_timestep, const NOISE_MODEL& model, double p);
 	std::vector<double> GetResultU() const;

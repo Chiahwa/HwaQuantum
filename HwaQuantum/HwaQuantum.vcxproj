@@ -138,6 +138,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvectionSolver.h" />
+    <ClInclude Include="params.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Input.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

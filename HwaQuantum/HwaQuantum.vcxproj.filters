@@ -26,5 +26,11 @@
     <ClInclude Include="ConvectionSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="params.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Input.txt" />
   </ItemGroup>
 </Project>

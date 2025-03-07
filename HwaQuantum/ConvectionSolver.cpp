@@ -11,7 +11,7 @@ inline QCircuit ConvectionSolver::oneTimeStepCircuit()
 	return circuit;
 }
 
-void ConvectionSolver::InitQVM(int n_qubits, double(*f)(double))
+void ConvectionSolver::InitQVM(int n_qubits, double dt, double(*f)(double))
 {
 	size_t Nx = 1LL << n_qubits;
 	double dx = L / Nx;
@@ -19,10 +19,10 @@ void ConvectionSolver::InitQVM(int n_qubits, double(*f)(double))
 	for (int k = 0;k < Nx;++k) {
 		initState[k] = f(k * dx);
 	}
-	InitQVM(n_qubits, initState);
+	InitQVM(n_qubits, dt, initState);
 }
 
-void ConvectionSolver::InitQVM(int n_qubits, vector<double> initState)
+void ConvectionSolver::InitQVM(int n_qubits, double dt, vector<double> initState)
 {
 	// TODO: delete old qvm
 	this->qvm = new DensityMatrixSimulator();
@@ -30,6 +30,7 @@ void ConvectionSolver::InitQVM(int n_qubits, vector<double> initState)
 	qvm->init();
 	this->n_qubits = n_qubits;
 	this->qubits = qvm->qAllocMany(n_qubits);
+	this->dt = dt;
 
 	size_t Nx = 1LL << n_qubits;
 	double sum = 0.0;
