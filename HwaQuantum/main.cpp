@@ -27,7 +27,7 @@ int main()
 	std::cin >> nqubits;
 	NX = 1LL << nqubits;
 	std::cout << "Please input noise_type:" << std::endl;
-	std::cin >> noise_type;
+	std::cin >> noise_type_str;
 	std::cout << "Please input noise_p:" << std::endl;
 	std::cin >> noise_p;
 
@@ -40,10 +40,6 @@ int main()
 	char filename_x[100] = "result/x.txt";
 	std::ofstream fout_x(filename_x, ios::out);
 	char filename_params[100] = "result/params.txt";
-	std::ofstream fout_params(filename_params, ios::out);
-	fout_params << "c L lambda offset dt nqubits nsteps noise_type noise_p" << std::endl;
-	fout_params << c << " " << L << " " << lambda << " " << offset << " " << dt << " " << nqubits << " " << nsteps << " " << noise_type << " " << noise_p << std::endl;
-	fout_params.close();
 
 	for (size_t i = 0; i < NX; ++i) {
 		fout_x << i * L / NX << " ";
@@ -53,14 +49,17 @@ int main()
 		double t = k * dt;
 		solver.InitQVM(nqubits, dt, f);
 		NOISE_MODEL noise_model;
-		if (noise_type == "BITFLIP") {
+		if (noise_type_str == "BITFLIP") {
 			noise_model = NOISE_MODEL::BITFLIP_KRAUS_OPERATOR;
+			noise_type = 0;
 		}
-		else if (noise_type == "DEPOLARIZING") {
+		else if (noise_type_str == "DEPOLARIZING") {
 			noise_model = NOISE_MODEL::DEPOLARIZING_KRAUS_OPERATOR;
+			noise_type = 1;
 		}
-		else if (noise_type == "DEPHASING") {
+		else if (noise_type_str == "DEPHASING") {
 			noise_model = NOISE_MODEL::DEPHASING_KRAUS_OPERATOR;
+			noise_type = 2;
 		}
 		else {
 			std::cerr << "Unknown noise type" << std::endl;
@@ -79,5 +78,10 @@ int main()
 	}
 	fout_u.close();
 	fout_x.close();
+
+	std::ofstream fout_params(filename_params, ios::out);
+	fout_params << "c L lambda offset dt nqubits nsteps noise_type noise_p" << std::endl;
+	fout_params << c << " " << L << " " << lambda << " " << offset << " " << dt << " " << nqubits << " " << nsteps << " " << noise_type << " " << noise_p << std::endl;
+	fout_params.close();
 	return 0;
 }

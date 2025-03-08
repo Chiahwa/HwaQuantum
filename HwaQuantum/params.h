@@ -14,5 +14,9 @@ double f(double x) {
     return sin(lambda * x)+offset;
 }
 
-string noise_type = "BITFLIP";
+string noise_type_str = "BITFLIP";
+int noise_type = 0;
+// 0: BITFLIP
+// 1: DEPOLARIZING
+// 2: DEPHASING
 double noise_p = 0.03;
