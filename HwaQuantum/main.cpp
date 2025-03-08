@@ -61,6 +61,10 @@ int main()
 			noise_model = NOISE_MODEL::DEPHASING_KRAUS_OPERATOR;
 			noise_type = 2;
 		}
+		else if (noise_type_str == "AMPLITUDE_DAMPING") {
+			noise_model = NOISE_MODEL::DAMPING_KRAUS_OPERATOR;
+			noise_type = 3;
+		}
 		else {
 			std::cerr << "Unknown noise type" << std::endl;
 			exit(1);
