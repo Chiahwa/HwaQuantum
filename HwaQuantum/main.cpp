@@ -39,7 +39,9 @@ int main()
 	std::ofstream fout_u(filename_u, ios::out);
 	char filename_x[100] = "result/x.txt";
 	std::ofstream fout_x(filename_x, ios::out);
-	char filename_params[100] = "result/params.txt";
+	char filename_spectrum[100] = "result/spectrum.txt";
+	std::ofstream fout_spectrum(filename_spectrum, ios::out);
+	
 
 	for (size_t i = 0; i < NX; ++i) {
 		fout_x << i * L / NX << " ";
@@ -69,20 +71,23 @@ int main()
 			std::cerr << "Unknown noise type" << std::endl;
 			exit(1);
 		}
-		solver.Run(k, noise_model, noise_p);
+		solver.SimulateDensityMatrix(k, noise_model, noise_p);
 		auto resultU = solver.GetResultU();
+		auto resultUSpectrum = solver.GetResultUSpectrum();
 		auto resultX = solver.GetX();
 
 		
 		for (size_t i = 0; i < resultU.size(); ++i) {
 			fout_u << resultU[i] << " ";
-			//fout_x << resultX[i] << std::endl;
+			fout_spectrum << resultUSpectrum[i] << " ";
 		}
 		fout_u << std::endl;
+		fout_spectrum << std::endl;
 	}
 	fout_u.close();
 	fout_x.close();
 
+	char filename_params[100] = "result/params.txt";
 	std::ofstream fout_params(filename_params, ios::out);
 	fout_params << "c L lambda offset dt nqubits nsteps noise_type noise_p" << std::endl;
 	fout_params << c << " " << L << " " << lambda << " " << offset << " " << dt << " " << nqubits << " " << nsteps << " " << noise_type << " " << noise_p << std::endl;

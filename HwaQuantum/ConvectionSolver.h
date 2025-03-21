@@ -15,6 +15,7 @@ private:
 	DensityMatrixSimulator *qvm;
 	cmatrix_t densityMatrix;
 	prob_vec probabilities;
+	prob_vec spectrum_probs;
 
 	QCircuit oneTimeStepCircuit();
 	//DensityMatrixSimulator qvm;
@@ -32,8 +33,9 @@ public:
 	void InitQVM(int n_qubits, double dt, double (*f)(double));
 	void InitQVM(int n_qubits, double dt, vector<double> initState);
 
-	void Run(int n_timestep, const NOISE_MODEL& model, double p);
+	void SimulateDensityMatrix(int n_timestep, const NOISE_MODEL& model, double p);
 	std::vector<double> GetResultU() const;
+	std::vector<double> GetResultUSpectrum() const;
 	std::vector<double> GetX() const;
 };
 

@@ -44,16 +44,18 @@ void ConvectionSolver::InitQVM(int n_qubits, double dt, vector<double> initState
 	*(this->prog) << amplitude_encode(qubits, initState);
 }
 
-void ConvectionSolver::Run(int n_timestep, const NOISE_MODEL &model, double p)
+void ConvectionSolver::SimulateDensityMatrix(int n_timestep, const NOISE_MODEL &model, double p)
 {
+	if (p > 0.0)
+		qvm->set_noise_model(model, GateType::RZ_GATE, p);
 	*prog << QFT(qubits);
 	for (int k = 0;k < n_timestep;++k) {
 		*prog << oneTimeStepCircuit();
 	}
+	this->spectrum_probs = qvm->get_probabilities(*prog);
 	*prog << QFT(qubits).dagger();
-	qvm->set_noise_model(model, GateType::RZ_GATE, p);
 	this->probabilities = qvm->get_probabilities(*prog);
-	//this->densityMatrix = qvm->get_density_matrix(prog); // TODO: densityMatrix can be removed
+	// this->densityMatrix = qvm->get_density_matrix(*prog); // TODO: densityMatrix can be removed
 }
 
 std::vector<double> ConvectionSolver::GetResultU() const
@@ -62,6 +64,18 @@ std::vector<double> ConvectionSolver::GetResultU() const
 	std::vector<double> result(Nx);
 	for (int k = 0;k < Nx;++k) {
 		result[k] = sqrt(probabilities[k]) * norm;
+		//int symbol = (densityMatrix(0, k).real() > 0) ? 1 : -1;
+		//result[k] = sqrt(densityMatrix(k, k).real()) * norm * symbol;
+	}
+	return result;
+}
+
+std::vector<double> ConvectionSolver::GetResultUSpectrum() const
+{
+	size_t Nx = 1LL << n_qubits;
+	std::vector<double> result(Nx);
+	for (int k = 0; k < Nx; ++k) {
+		result[k] = sqrt(spectrum_probs[k]) * norm;
 	}
 	return result;
 }
