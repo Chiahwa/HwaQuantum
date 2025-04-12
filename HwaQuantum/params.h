@@ -6,11 +6,11 @@ double L = 2 * PI;
 
 double dt = 0.15;
 int nsteps = 30;
-int nqubits = 9;
+int nqubits;
 size_t NX = 1LL << nqubits;
 
 double lambda = 2.0;
-double offset = 2.0;
+double offset = 2.5;
 
 
 string noise_type_str = "BITFLIP";
@@ -22,7 +22,7 @@ double noise_p = 0.03;
 
 
 inline double f(double x) {
-	return sin(lambda * x)+offset;
+	return sin(lambda * x) + sin(2 * lambda * x) + offset;
 	// return 1;
 	// return -x * (x - L);
 }
