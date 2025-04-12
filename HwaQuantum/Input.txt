@@ -5,8 +5,9 @@
 0.005
 100
 9
-DEPOLARIZING
+DAMPING
 0.001
+1
 
 %%%
 c
@@ -18,3 +19,4 @@ nsteps
 nqubits*
 noise_type*
 noise_p*
+init_cond

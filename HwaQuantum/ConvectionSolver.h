@@ -34,7 +34,9 @@ public:
 	void InitQVM(int n_qubits, double dt, vector<double> initState);
 
 	void SimulateDensityMatrix(int n_timestep, const NOISE_MODEL& model, double p);
+	void SimulateDensityMatrix(int n_timestep);
 	std::vector<double> GetResultU() const;
+	std::vector<double> GetAnalyticU(int n_timesteps) const;
 	std::vector<double> GetResultUSpectrum() const;
 	std::vector<double> GetX() const;
 };
