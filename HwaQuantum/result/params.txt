@@ -1,2 +1,2 @@
 c L lambda offset dt nqubits nsteps noise_type noise_p init_cond
-1 6.28319 2 2 0.005 9 100 4 0.001 1
+1 6.28319 2 2 0.005 9 100 3 0.001 1

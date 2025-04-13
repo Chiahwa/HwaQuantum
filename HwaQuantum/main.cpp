@@ -48,9 +48,6 @@ int main()
 		fout_x << i * L / NX << " ";
 	}
 
-    
-	
-	
 
 	NOISE_MODEL noise_model;
 	if (noise_type_str == "NONOISE")
